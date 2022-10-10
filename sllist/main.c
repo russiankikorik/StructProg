@@ -1,5 +1,6 @@
 #include "sllist.h"
 #include <assert.h>
+#include <stdio.h>
 
 typedef struct tArray {
     int size;
@@ -11,6 +12,11 @@ Array* create(int size) {
     array->size = size;
     array->arr = (int*)malloc(size * sizeof(int));
     return array;
+}
+
+Array* copy(Array* array) {
+    Array* copy = create(array->size);
+    return copy;
 }
 
 void destroy(void* array) {
@@ -28,6 +34,20 @@ int compare(void* array1, void* array2) {
         return 1;
     }
     else {
+        return 0;
+    }
+}
+
+void func(void* array) {
+    Array* a = (Array*)array;
+    printf("%d\n", a->size);
+}
+
+int predicate(void* array) {
+    Array* a = (Array*)array;
+    if (a->size == 30) {
+        return 1;
+    } else {
         return 0;
     }
 }
@@ -127,6 +147,23 @@ int main() {
     list = sllist_insert(list, 1, a2);
     list = sllist_insert(list, 3, a4);
     list = sllist_insert(list, 3, a3a);
+
+    Node* list_copy = sllist_copy(list, copy);
+    Node* node = list;
+    Node* copy_node = list_copy;
+    for (;node != NULL;) {
+        assert(((Array*)(node->data))->size == ((Array*)(copy_node->data))->size);
+        node = node->next;
+        copy_node = copy_node->next;
+    }
+    Node* concat = sllist_concat(NULL, list);
+    assert(sllist_length(concat) == 5);
+    concat = sllist_concat(concat, list_copy);
+    assert(sllist_length(concat) == 10);
+    concat = sllist_concat(concat, NULL);
+    assert(sllist_length(concat) == 10);
+    sllist_foreach(concat, func);
+    assert(sllist_find_custom(list, predicate) == 2);
     //*/
     /*
     list = sllist_remove_first(list, a1, compare, destroy);

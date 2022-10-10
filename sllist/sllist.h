@@ -48,3 +48,11 @@ Node* sllist_remove_all(
         int (*compare)(void*, void*),
         void (*destroy)(void*)
         );
+
+Node* sllist_copy(Node* list, void* (*copy)(void*));
+
+Node* sllist_concat(Node* list1, Node* list2);
+
+void sllist_foreach(Node* list, void (*func)(void*));
+
+int sllist_find_custom(Node* list, int (*predicate)(void*)); 

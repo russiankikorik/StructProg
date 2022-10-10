@@ -247,24 +247,55 @@ Node* sllist_remove_all(
     }
     return list;
 }
-//bad
+
 Node* sllist_copy(Node* list, void* (*copy)(void*)) {
-    Node* node = list;
     Node* list_copy = NULL;
-    Node* node_copy = NULL;
-    void* data_copy = NULL;
-    while (node != NULL) {
-        data_copy = copy(node->data);
-        node_copy = _make_node(data_copy);
-        if (node_copy == NULL) {
-            list_copy = NULL;
-            break;
+    if (copy != NULL) {
+        Node* node = list;
+        void* data_copy = NULL;
+        while (node != NULL) {
+            data_copy = copy(node->data);
+            list_copy = sllist_append(list_copy, data_copy);
+            node = node->next;
         }
-        list_copy = sllist_append(list_copy, node_copy);
-        node = node->next;
     }
     return list_copy;
 }
 
+Node* sllist_concat(Node* list1, Node* list2) {
+    Node* list = list1;
+    if (list != NULL) {
+        Node* node = list;
+        while (node->next != NULL) {
+            node = node->next;
+        }
+        node->next = list2;
+    } else {
+        list = list2;
+    }
+    return list;
+}
 
+void sllist_foreach(Node* list, void (*func)(void*)) {
+    if (func != NULL) {
+        while (list != NULL) {
+            func(((Node*)list)->data);
+            list = list->next;
+        }
+    }
+}
 
+int sllist_find_custom(Node* list, int (*predicate)(void*)) {
+    int i = 0;
+    if (predicate != NULL) {
+        for (; list != NULL && !predicate(list->data); i += 1) {
+            list = list->next;
+        }
+        if (list == NULL) {
+            i = -1;
+        }
+    } else {
+        i = -1;
+    }
+    return i;
+}
