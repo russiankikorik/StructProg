@@ -53,6 +53,145 @@ int predicate(void* array) {
 }
 
 int main() {
+    //length, prepend, get, delete_all
+    {
+        Array* a0 = create(0);
+        Array* a1 = create(10);
+        Array* a2 = create(20);
+        Node* list = NULL;
+        assert(sllist_length(list) == 0);
+        list = sllist_prepend(list, a0);
+        assert(sllist_length(list) == 1);
+        assert(sllist_get(list, 0) == a0);
+        list = sllist_prepend(list, a1);
+        assert(sllist_length(list) == 2);
+        assert(sllist_get(list, 0) == a1);
+        assert(sllist_get(list, 1) == a0);
+        list = sllist_prepend(list, a2);
+        assert(sllist_length(list) == 3);
+        assert(sllist_get(list, 0) == a2);
+        assert(sllist_get(list, 1) == a1);
+        assert(sllist_get(list, 2) == a0);
+        sllist_delete_all(list, destroy);
+    }
+    //append, delete_first, delete_last
+    {
+        Array* a0 = create(0);
+        Array* a1 = create(10);
+        Array* a2 = create(20);
+        Array* a3 = create(30);
+        Array* a4 = create(40);
+        Array* a5 = create(50);
+        Node* list = NULL;
+        list = sllist_append(list, a0);
+        assert(sllist_length(list) == 1);
+        assert(sllist_get(list, 0) == a0);
+        list = sllist_append(list, a1);
+        assert(sllist_length(list) == 2);
+        assert(sllist_get(list, 0) == a0);
+        assert(sllist_get(list, 1) == a1);
+        list = sllist_append(list, a2);
+        assert(sllist_length(list) == 3);
+        assert(sllist_get(list, 0) == a0);
+        assert(sllist_get(list, 1) == a1);
+        assert(sllist_get(list, 2) == a2);
+
+        list = sllist_append(list, a3);
+        list = sllist_delete_first(list, destroy);
+        assert(sllist_length(list) == 3);
+        assert(sllist_get(list, 0) == a1);
+        list = sllist_delete_last(list, destroy); 
+        assert(sllist_length(list) == 2);
+        assert(sllist_get(list, 1) == a2);
+
+        list = sllist_delete_first(list, destroy);
+        assert(sllist_length(list) == 1);
+        assert(sllist_get(list, 0) == a2);
+        list = sllist_delete_first(list, destroy);
+        assert(list == NULL);
+        
+        list = sllist_append(list, a4);
+        list = sllist_append(list, a5);
+        list = sllist_delete_last(list, destroy);
+        assert(sllist_length(list) == 1);
+        assert(sllist_get(list, 0) == a4);
+        list = sllist_delete_last(list, destroy);
+        assert(list == NULL);
+    }
+    //get_last, put_last
+    {
+        Array* a0 = create(0);
+        Array* a1 = create(10);
+        Array* a2 = create(20);
+        Array* a0a = create(30);
+        Array* a1a = create(40);
+        Array* a2a = create(50);
+        Node* list = NULL;
+        list = sllist_append(list, a0);
+        assert(sllist_get_last(list) == a0);
+        sllist_put_last(list, a0a, destroy);
+        assert(sllist_get_last(list) == a0a);
+        list = sllist_append(list, a1);
+        assert(sllist_get_last(list) == a1);
+        sllist_put_last(list, a1a, destroy);
+        assert(sllist_get_last(list) == a1a);
+        list = sllist_append(list, a2);
+        assert(sllist_get_last(list) == a2);
+        sllist_put_last(list, a2a, destroy);
+        assert(sllist_get_last(list) == a2a);
+        sllist_delete_all(list, destroy);
+    }
+    //put
+    {
+        Array* a0 = create(0);
+        Array* a1 = create(10);
+        Array* a2 = create(20);
+        Array* a0a = create(30);
+        Array* a1a = create(40);
+        Array* a2a = create(50);
+        Node* list = NULL;
+        list = sllist_append(list, a0);
+        list = sllist_append(list, a1);
+        list = sllist_append(list, a2);
+        sllist_put(list, 0, a0a, destroy);
+        assert(sllist_get(list, 0) == a0a);
+        sllist_put(list, 1, a1a, destroy);
+        assert(sllist_get(list, 1) == a1a);
+        sllist_put(list, 2, a2a, destroy);
+        assert(sllist_get(list, 2) == a2a);
+        sllist_delete_all(list, destroy);
+    }
+    //insert
+    {
+        Array* a0 = create(0);
+        Array* a1 = create(10);
+        Array* a2 = create(20);
+        Array* a3 = create(30);
+        Node* list = NULL;
+        list = sllist_insert(list, 1, a1);
+        assert(list == NULL);
+        list = sllist_insert(list, 0, a1);
+        assert(sllist_length(list) == 1);
+        assert(sllist_get(list, 0) == a1);
+        list = sllist_insert(list, 0, a0);
+        assert(sllist_length(list) == 2);
+        assert(sllist_get(list, 0) == a0);
+        assert(sllist_get(list, 1) == a1);
+        list = sllist_insert(list, 3, a3);
+        assert(sllist_length(list) == 2);
+        list = sllist_insert(list, 2, a3);
+        assert(sllist_length(list) == 3);
+        assert(sllist_get(list, 2) == a3);
+        list = sllist_insert(list, 2, a2);
+        assert(sllist_length(list) == 4);
+        assert(sllist_get(list, 2) == a2);
+        assert(sllist_get(list, 3) == a3);
+        assert(sllist_get(list, 0) == a0);
+        assert(sllist_get(list, 1) == a1);
+        sllist_delete_all(list, destroy);
+    }
+
+
     /*    
     Array* a1 = create(10);
     Node* list = NULL;
@@ -84,7 +223,7 @@ int main() {
     list = sllist_append(list, a2);
     Array* a3 = create(30);
     list = sllist_append(list, a3);
-    assert(sllist_length(list) == 3);
+    sert(sllist_length(list) == 3);
     Array* a4 = create(5);
     sllist_put(list, 1, a4, destroy);
     assert(((Array*)sllist_get(list, 1))->size == 5);

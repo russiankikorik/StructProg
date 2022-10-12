@@ -165,7 +165,7 @@ void* sllist_get_last(Node* list) {
     return data;
 }
 
-void sllist_put_last(Node* list, int i, void* data, void (*destroy)(void*)) {
+void sllist_put_last(Node* list, void* data, void (*destroy)(void*)) {
     if (list != NULL) {
         while (list->next != NULL) {
             list = list->next;
