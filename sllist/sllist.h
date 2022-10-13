@@ -1,5 +1,8 @@
 #include <stdlib.h>
 
+#ifndef _SLLIST_
+#define _SLLIST_
+
 typedef struct Node {
     void* data;
     void* next;
@@ -57,3 +60,5 @@ Node* sllist_concat(Node* list1, Node* list2);
 void sllist_foreach(Node* list, void (*func)(void*));
 
 int sllist_find_custom(Node* list, int (*predicate)(void*)); 
+
+#endif
