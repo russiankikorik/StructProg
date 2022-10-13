@@ -2,6 +2,9 @@
 #include "sllstack.h"
 #include <stdlib.h>
 
+#ifndef _SLLSTACK_
+#define _SLLSTACK_
+
 void stack_create(Stack* pstack) {
     Stack stack;
     Node* list = NULL;
@@ -30,3 +33,5 @@ void* stack_pop(Stack* pstack) {
 void* stack_peek(Stack* pstack) {
     return sllist_get(pstack->top, 0);
 }
+
+#endif
