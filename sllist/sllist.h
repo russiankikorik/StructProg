@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
-#ifndef _SLLIST_
-#define _SLLIST_
+#ifndef _SLLIST_H_
+#define _SLLIST_H_
 
 typedef struct Node {
     void* data;

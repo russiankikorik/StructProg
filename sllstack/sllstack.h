@@ -1,7 +1,7 @@
 #include "../sllist/sllist.h"
 
-#ifndef _SLLSTACK_
-#define _SLLSTACK_
+#ifndef _SLLSTACK_H_
+#define _SLLSTACK_H_
 
 typedef struct tStack {
     Node* top;
