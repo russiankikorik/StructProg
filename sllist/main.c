@@ -58,7 +58,7 @@ int main() {
         Array* a0 = create(0);
         Array* a1 = create(10);
         Array* a2 = create(20);
-        Node* list = NULL;
+        SLLnode* list = NULL;
         assert(sllist_length(list) == 0);
         list = sllist_prepend(list, a0);
         assert(sllist_length(list) == 1);
@@ -83,7 +83,7 @@ int main() {
         Array* a3 = create(30);
         Array* a4 = create(40);
         Array* a5 = create(50);
-        Node* list = NULL;
+        SLLnode* list = NULL;
         list = sllist_append(list, a0);
         assert(sllist_length(list) == 1);
         assert(sllist_get(list, 0) == a0);
@@ -127,7 +127,7 @@ int main() {
         Array* a0a = create(30);
         Array* a1a = create(40);
         Array* a2a = create(50);
-        Node* list = NULL;
+        SLLnode* list = NULL;
         list = sllist_append(list, a0);
         assert(sllist_get_last(list) == a0);
         sllist_put_last(list, a0a, destroy);
@@ -150,7 +150,7 @@ int main() {
         Array* a0a = create(30);
         Array* a1a = create(40);
         Array* a2a = create(50);
-        Node* list = NULL;
+        SLLnode* list = NULL;
         list = sllist_append(list, a0);
         list = sllist_append(list, a1);
         list = sllist_append(list, a2);
@@ -168,7 +168,7 @@ int main() {
         Array* a1 = create(10);
         Array* a2 = create(20);
         Array* a3 = create(30);
-        Node* list = NULL;
+        SLLnode* list = NULL;
         list = sllist_insert(list, 1, a1);
         assert(list == NULL);
         list = sllist_insert(list, 0, a1);
@@ -218,7 +218,7 @@ int main() {
         Array* b1 = create(10);
         Array* b2 = create(20);
         Array* b3 = create(30);
-        Node* list = NULL;
+        SLLnode* list = NULL;
         list = sllist_append(list, a0);
         list = sllist_append(list, a1);
         list = sllist_append(list, a2);
@@ -245,7 +245,7 @@ int main() {
         Array* b1 = create(10);
         Array* b2 = create(20);
         Array* b3 = create(30);
-        Node* list = NULL;
+        SLLnode* list = NULL;
         list = sllist_append(list, a0);
         list = sllist_append(list, a1);
         list = sllist_append(list, a2);
@@ -282,7 +282,7 @@ int main() {
         Array* b1 = create(10);
         Array* b2 = create(20);
         Array* b3 = create(30);
-        Node* list = NULL;
+        SLLnode* list = NULL;
         list = sllist_append(list, a0);
         list = sllist_append(list, a1);
         list = sllist_append(list, a2);
@@ -314,13 +314,13 @@ int main() {
         Array* a2 = create(10);
         Array* a3 = create(10);
         Array* a4 = create(20);
-        Node* list = NULL;
+        SLLnode* list = NULL;
         list = sllist_append(list, a0);
         list = sllist_append(list, a1);
         list = sllist_append(list, a2);
         list = sllist_append(list, a3);
         list = sllist_append(list, a4);
-        Node* list_copy;
+        SLLnode* list_copy;
 
         list_copy = sllist_copy(list, copy);
         assert(sllist_length(list_copy) == 5);
@@ -328,7 +328,7 @@ int main() {
             assert(((Array*)sllist_get(list, i))->size == ((Array*)sllist_get(list_copy, i))->size);
         }
 
-        Node* concatenated;
+        SLLnode* concatenated;
         concatenated = sllist_concat(NULL, list);
         assert(sllist_length(concatenated) == 5);
         concatenated = sllist_concat(concatenated, NULL);

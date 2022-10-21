@@ -4,7 +4,7 @@
 #define _SLLSTACK_H_
 
 typedef struct tStack {
-    Node* top;
+    SLLnode* top;
 } Stack;
 
 void stack_create(Stack* pstack);

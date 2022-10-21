@@ -1,8 +1,8 @@
 #include "sllist.h"
 #include <stdlib.h>
 
-Node* _make_node(void* data) {
-    Node* node = (Node*)malloc(sizeof(Node));
+SLLnode* _make_node(void* data) {
+    SLLnode* node = (SLLnode*)malloc(sizeof(SLLnode));
     if (node != NULL) {
         node->data = data;
         node->next = NULL;
@@ -10,7 +10,7 @@ Node* _make_node(void* data) {
     return node;
 }
 
-void _free_node(Node* node, void (*destroy)(void*)) {
+void _free_node(SLLnode* node, void (*destroy)(void*)) {
     if (node != NULL) {
         if (node->data != NULL && destroy != NULL) {
             destroy(node->data);
@@ -19,7 +19,7 @@ void _free_node(Node* node, void (*destroy)(void*)) {
     }
 }
 
-int sllist_length(Node* list) {
+int sllist_length(SLLnode* list) {
     int length = 0;
     while (list != NULL) {
         length += 1;
@@ -28,8 +28,8 @@ int sllist_length(Node* list) {
     return length;
 }
 
-Node* sllist_prepend(Node* list, void* data) {
-    Node* node = _make_node(data);
+SLLnode* sllist_prepend(SLLnode* list, void* data) {
+    SLLnode* node = _make_node(data);
     if (node != NULL) {
         node->next = list;
         list = node;
@@ -37,11 +37,11 @@ Node* sllist_prepend(Node* list, void* data) {
     return list;
 }
 
-Node* sllist_append(Node* list, void* data) {
+SLLnode* sllist_append(SLLnode* list, void* data) {
     if (list == NULL) {
         list = _make_node(data);
     } else {
-        Node* node = list;
+        SLLnode* node = list;
         while (node->next != NULL) {
             node = node->next;
         }
@@ -50,23 +50,23 @@ Node* sllist_append(Node* list, void* data) {
     return list;
 }
 
-Node* sllist_delete_first(Node* list, void (*destroy)(void*)) {
+SLLnode* sllist_delete_first(SLLnode* list, void (*destroy)(void*)) {
     if (list != NULL) {
-        Node* deleted = list;
+        SLLnode* deleted = list;
         list = deleted->next;
         _free_node(deleted, destroy);
     }
     return list;
 }
 
-Node* sllist_delete_last(Node* list, void (*destroy)(void*)) {
+SLLnode* sllist_delete_last(SLLnode* list, void (*destroy)(void*)) {
     if (list == NULL) {}
     else if (list->next == NULL) {
         list = sllist_delete_first(list, destroy);
     }
     else {
-        Node* node = list;
-        Node* deleted = list->next;
+        SLLnode* node = list;
+        SLLnode* deleted = list->next;
         while (deleted->next != NULL) {
             node = node->next;
             deleted = deleted->next;
@@ -77,8 +77,8 @@ Node* sllist_delete_last(Node* list, void (*destroy)(void*)) {
     return list;
 }
 
-void* sllist_get(Node* list, int i) {
-    Node* node = list;
+void* sllist_get(SLLnode* list, int i) {
+    SLLnode* node = list;
     void* data = NULL;
     for (int j = 0; j < i && node != NULL; j += 1) {
         node = node->next;
@@ -89,8 +89,8 @@ void* sllist_get(Node* list, int i) {
     return data;
 }
 
-void sllist_put(Node* list, int i, void* data, void (*destroy)(void*)) {
-    Node* node = list;
+void sllist_put(SLLnode* list, int i, void* data, void (*destroy)(void*)) {
+    SLLnode* node = list;
     for (int j = 0; j < i && node != NULL; j += 1) {
         node = node->next;
     }
@@ -102,17 +102,17 @@ void sllist_put(Node* list, int i, void* data, void (*destroy)(void*)) {
     }
 }
 
-Node* sllist_insert(Node* list, int i, void* data) {
+SLLnode* sllist_insert(SLLnode* list, int i, void* data) {
     if (i == 0) {
         list = sllist_prepend(list, data);
     }
     else if (i > 0) {
-        Node* appendto = list;
+        SLLnode* appendto = list;
         for (int j = 1; j < i && appendto != NULL; j += 1) {
             appendto = appendto->next;
         }
         if (appendto != NULL) {
-            Node* node = _make_node(data);
+            SLLnode* node = _make_node(data);
             node->next = appendto->next;
             appendto->next = node;
         }
@@ -120,13 +120,13 @@ Node* sllist_insert(Node* list, int i, void* data) {
     return list;
 }
 
-Node* sllist_delete(Node* list, int i, void (*destroy)(void*)) {
+SLLnode* sllist_delete(SLLnode* list, int i, void (*destroy)(void*)) {
     if (i == 0) {
         list = sllist_delete_first(list, destroy);
     }
     else if (i > 0) {
-        Node* node = list;
-        Node* deleted = NULL;
+        SLLnode* node = list;
+        SLLnode* deleted = NULL;
         if (node != NULL) {
             deleted = node->next;
         }
@@ -142,10 +142,10 @@ Node* sllist_delete(Node* list, int i, void (*destroy)(void*)) {
     return list;
 }
 
-void sllist_delete_all(Node* list, void (*destroy)(void*)) {
+void sllist_delete_all(SLLnode* list, void (*destroy)(void*)) {
     if (list != NULL) {
-        Node* next;
-        Node* deleted = list;
+        SLLnode* next;
+        SLLnode* deleted = list;
         while (deleted != NULL) {
             next = deleted->next;
             _free_node(deleted, destroy);
@@ -154,7 +154,7 @@ void sllist_delete_all(Node* list, void (*destroy)(void*)) {
     }
 }
 
-void* sllist_get_last(Node* list) {
+void* sllist_get_last(SLLnode* list) {
     void* data = NULL;
     if (list != NULL) {
         while (list->next != NULL) {
@@ -165,7 +165,7 @@ void* sllist_get_last(Node* list) {
     return data;
 }
 
-void sllist_put_last(Node* list, void* data, void (*destroy)(void*)) {
+void sllist_put_last(SLLnode* list, void* data, void (*destroy)(void*)) {
     if (list != NULL) {
         while (list->next != NULL) {
             list = list->next;
@@ -177,7 +177,7 @@ void sllist_put_last(Node* list, void* data, void (*destroy)(void*)) {
     }
 }
 
-int sllist_find(Node* list, void* data, int (*equals)(void*, void*)) {
+int sllist_find(SLLnode* list, void* data, int (*equals)(void*, void*)) {
     int i = 0;
     if (equals != NULL) {
         for (; list != NULL && /*!*/equals(list->data, data); i += 1) {
@@ -192,8 +192,8 @@ int sllist_find(Node* list, void* data, int (*equals)(void*, void*)) {
     return i;
 }
 
-Node* sllist_remove_first(
-        Node* list,
+SLLnode* sllist_remove_first(
+        SLLnode* list,
         void* data,
         int (*equals)(void*, void*),
         void (*destroy)(void*)
@@ -203,8 +203,8 @@ Node* sllist_remove_first(
             list = sllist_delete_first(list, destroy);
         }
         else if (list != NULL) {
-            Node* node = list;
-            Node* deleted = list->next;
+            SLLnode* node = list;
+            SLLnode* deleted = list->next;
             while (deleted != NULL && /*!*/equals(deleted->data, data)) {
                 node = node->next;
                 deleted = deleted->next;
@@ -218,8 +218,8 @@ Node* sllist_remove_first(
     return list;
 }
 
-Node* sllist_remove_all(
-        Node* list,
+SLLnode* sllist_remove_all(
+        SLLnode* list,
         void* data,
         int (*equals)(void*, void*),
         void (*destroy)(void*)
@@ -229,8 +229,8 @@ Node* sllist_remove_all(
         while (list != NULL && ! equals(list->data, data)) {
             list = sllist_delete_first(list, destroy);
         }
-        Node* node = list;
-        Node* deleted = NULL;
+        SLLnode* node = list;
+        SLLnode* deleted = NULL;
         if (node != NULL) {
             deleted = node->next;
         }
@@ -248,10 +248,10 @@ Node* sllist_remove_all(
     return list;
 }
 
-Node* sllist_copy(Node* list, void* (*copy)(void*)) {
-    Node* list_copy = NULL;
+SLLnode* sllist_copy(SLLnode* list, void* (*copy)(void*)) {
+    SLLnode* list_copy = NULL;
     if (copy != NULL) {
-        Node* node = list;
+        SLLnode* node = list;
         void* data_copy = NULL;
         while (node != NULL) {
             data_copy = copy(node->data);
@@ -262,10 +262,10 @@ Node* sllist_copy(Node* list, void* (*copy)(void*)) {
     return list_copy;
 }
 
-Node* sllist_concat(Node* list1, Node* list2) {
-    Node* list = list1;
+SLLnode* sllist_concat(SLLnode* list1, SLLnode* list2) {
+    SLLnode* list = list1;
     if (list != NULL) {
-        Node* node = list;
+        SLLnode* node = list;
         while (node->next != NULL) {
             node = node->next;
         }
@@ -276,16 +276,16 @@ Node* sllist_concat(Node* list1, Node* list2) {
     return list;
 }
 
-void sllist_foreach(Node* list, void (*func)(void*)) {
+void sllist_foreach(SLLnode* list, void (*func)(void*)) {
     if (func != NULL) {
         while (list != NULL) {
-            func(((Node*)list)->data);
+            func(((SLLnode*)list)->data);
             list = list->next;
         }
     }
 }
 
-int sllist_find_custom(Node* list, int (*predicate)(void*)) {
+int sllist_find_custom(SLLnode* list, int (*predicate)(void*)) {
     int i = 0;
     if (predicate != NULL) {
         for (; list != NULL && !predicate(list->data); i += 1) {
