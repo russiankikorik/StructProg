@@ -16,7 +16,7 @@ size_t jenkins_one_at_a_time_hash(char *key) {
 }
 
 void ht_init(HashTable *ht, size_t size, HashFunc hf, Destructor dtor) {
-    if (hf == NULL) {
+    if (hf == NULL  && size > 0) {
         hf = jenkins_one_at_a_time_hash;
     }
     ht->hf = hf;
@@ -40,7 +40,7 @@ void ht_destroy(HashTable *ht) {
 }
 
 void ht_set(HashTable *ht, char* key, void* data) {
-    if (ht->table != NULL && ht->size != 0 && ht->hf != NULL) {
+    if (key != NULL && ht->table != NULL) {
         size_t index = ((ht->hf)(key)) % ht->size;
         (ht->table)[index] = hlist_insert(
                 (ht->table)[index],
@@ -52,7 +52,7 @@ void ht_set(HashTable *ht, char* key, void* data) {
 
 void* ht_get(HashTable* ht, char* key) {
     void* data = NULL;
-    if (ht->table != NULL && ht->size != 0 && ht->hf != NULL) {
+    if (key != NULL && ht->table != NULL) {
         size_t index = ((ht->hf)(key)) % ht->size;
         data = hlist_get(((ht->table)[index]), key);
     }
@@ -61,7 +61,7 @@ void* ht_get(HashTable* ht, char* key) {
 
 int ht_has(HashTable* ht, char* key) {
     int has = 0;
-    if (ht->table != NULL && ht->size != 0 && ht->hf != NULL) {
+    if (key != NULL && ht->table != NULL) {
         size_t index = ((ht->hf)(key)) % ht->size;
         has = hlist_has(((ht->table)[index]), key);
     }
@@ -69,14 +69,14 @@ int ht_has(HashTable* ht, char* key) {
 }
 
 void ht_delete(HashTable* ht, char* key) {
-    if (ht->table != NULL && ht->size != 0 && ht->hf != NULL) {
+    if (key != NULL && ht->table != NULL) {
         size_t index = ((ht->hf)(key)) % ht->size;
         (ht->table)[index] = hlist_delete((ht->table)[index], key, ht->dtor);
     }
 }
 
 void ht_traverse(HashTable* ht, void (*f)(char* key, void* data)) {
-    if (ht->table != NULL && ht->size != 0 && ht->hf != NULL) {
+    if (f != NULL && ht->table != NULL) {
         for (int i = 0; i < ht->size; i += 1) {
             hlist_foreach((ht->table)[i], f);
         }
@@ -84,11 +84,7 @@ void ht_traverse(HashTable* ht, void (*f)(char* key, void* data)) {
 }
 
 void ht_resize(HashTable* ht, size_t new_size) {
-    if (ht->table != NULL &&
-            ht->size != 0 &&
-            ht->hf != NULL &&
-            new_size > 0 &&
-            new_size != ht->size) {
+    if (ht->table != NULL && new_size > 0 && new_size != ht->size) {
         HLnode** new_table = (HLnode**)malloc(sizeof(HLnode*) * new_size);
         for (int i = 0; i < new_size; i += 1) {
             new_table[i] = NULL;
