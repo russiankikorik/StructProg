@@ -1,3 +1,6 @@
+#ifndef _HLIST_H_
+#define _HLIST_H_
+
 typedef struct _HLnode {
     char* key;
     void* data;
@@ -20,3 +23,4 @@ int hlist_has(HLnode* list, char* key);
 void hlist_foreach(HLnode* list, void (*func)(char *key, void* data));
 
 HLnode* hlist_delete_all(HLnode* list, void (*destroy)(void*));
+#endif
