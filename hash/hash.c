@@ -23,7 +23,7 @@ void ht_init(HashTable *ht, size_t size, HashFunc hf, Destructor dtor) {
     ht->size = size;
     ht->dtor = dtor;
     ht->table = (HLnode**)malloc(sizeof(HLnode*) * size);
-    for (int i; i < size; i += 1) {
+    for (int i = 0; i < size; i += 1) {
         (ht->table)[i] = NULL;
     }
 }
