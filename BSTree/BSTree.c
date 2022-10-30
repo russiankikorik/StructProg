@@ -172,33 +172,29 @@ void* bst_delete(BST* tree, void* data) {
 }
 
 void bst_clear(BST* tree) {
-    if (tree != NULL) {
-        BSTNode* min = _sub_min(tree->root);
-        BSTNode* parent = (BSTNode*)(min->parent);
-        while (tree->root != NULL) {
-            if (min->right == NULL) {
-                _remove_node(tree, min);
-                _free_node(min);
-                min = parent;
-                if (min != NULL) {
-                    parent = (BSTNode*)(min->parent);
-                } else {
-                    parent = NULL;
-                }
-            } else {
-                min = _sub_min((BSTNode*)(min->right));
+    BSTNode* min = _sub_min(tree->root);
+    BSTNode* parent = (BSTNode*)(min->parent);
+    while (tree->root != NULL) {
+        if (min->right == NULL) {
+            _remove_node(tree, min);
+            _free_node(min);
+            min = parent;
+            if (min != NULL) {
                 parent = (BSTNode*)(min->parent);
+            } else {
+                parent = NULL;
             }
+        } else {
+            min = _sub_min((BSTNode*)(min->right));
+            parent = (BSTNode*)(min->parent);
         }
-        tree->size = 0;
     }
+    tree->size = 0;
 }
 
 void bst_destroy(BST* tree) {
-    if (tree != NULL) {
-        bst_clear(tree);
-        _free_tree(tree);
-    }
+    bst_clear(tree);
+    _free_tree(tree);
 }
 
 
