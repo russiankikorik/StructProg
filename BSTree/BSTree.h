@@ -4,7 +4,6 @@
 #define _BSTREE_H_
 
 typedef int (*Comparator)(void* data1, void* data2); //data1 - value stored
-typedef void (*Destructor)(void* data);
 
 typedef struct tBSTNode {
     void* data;

@@ -66,6 +66,7 @@ int main() {
     assert(arr[3] == *((int*)bst_find(tree, (void*)(arr + 3))));
     assert(arr[4] == *((int*)bst_find(tree, (void*)(arr + 4))));
 */
+    /*
     assert(arr[0] == *((int*)bst_delete(tree, (void*)(arr))));
     printf("%ld\n", bst_size(tree));
     bst_foreach(tree, printer, NULL);
@@ -86,6 +87,7 @@ int main() {
     printf("%ld\n", bst_size(tree));
     bst_foreach(tree, printer, NULL);
     printf("\n");
-
+    */
+    bst_destroy(tree);
     return 0;
 }
