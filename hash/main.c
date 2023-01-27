@@ -184,29 +184,29 @@ int main() {
     {
         size_t number, len, size;
         
-        number = 10000;
+        number = 1000000;
         len = 10;
         
-        size = 1;
-        mytest(size, number, len);
-        printf("\n");
-        size = 10;
-        mytest(size, number, len);
-        printf("\n");
-        size = 100;
-        mytest(size, number, len);
-        printf("\n");
-        size = 1000;
-        mytest(size, number, len);
-        printf("\n");
         size = 10000;
         mytest(size, number, len);
         printf("\n");
         size = 100000;
         mytest(size, number, len);
         printf("\n");
+        size = 1000000;
+        mytest(size, number, len);
+        printf("\n");
+        size = 10000000;
+        mytest(size, number, len);
+        printf("\n");
+        size = 100000000;
+        mytest(size, number, len);
+        printf("\n");
+        size = 100000000;
+        mytest(size, number, len);
+        printf("\n");
 
-        resize_test(1, number, len);
+        resize_test(10000, number, len);
     }
 
     HashTable ht;
