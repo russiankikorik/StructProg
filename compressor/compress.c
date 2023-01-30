@@ -1,4 +1,4 @@
-#include "htnqueue.h"
+#include "compress.h"
 #include "bitio.h"
 
 #include <stdlib.h>
@@ -98,6 +98,9 @@ size_t write_compressed_data(
             node = parent;
             parent = node->p;
         }
+        if (i == 0) {
+            fwrite_bit(fbostream, 0);
+        }
         int j;
         for (j = i - 1; j >= 0; j -= 1) { 
             fwrite_bit(fbostream, buf[j]);
@@ -106,18 +109,6 @@ size_t write_compressed_data(
     }
     flush_bits(fbostream);
     return size;
-}
-
-void destroy_htree(HTNode* root) {
-    HTNode* l = root->l;
-    HTNode* r = root->r;
-    destroy_htnode(root);
-    if (l != NULL) {
-        destroy_htree(l);
-    }
-    if (r != NULL) {
-        destroy_htree(r);
-    }
 }
 
 void compress(
@@ -145,17 +136,3 @@ void compress(
     destroy_fbostream(fbostream);
     destroy_htree(root);
 }
-
-
-
-int main() {
-    FILE* input = fopen("suka", "rb");
-    FILE* output = fopen("blyad", "wb");
-    size_t origin_sz, tree_sz, new_sz;
-    tree_sz = 0;
-    compress(input, output, 1, &origin_sz, &tree_sz, &new_sz);
-    fclose(input);
-    fclose(output);
-    return 0;
-}
-

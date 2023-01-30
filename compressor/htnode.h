@@ -15,4 +15,6 @@ HTNode* init_htnode(void);
 
 void destroy_htnode(HTNode* htnode);
 
+void destroy_htree(HTNode* root);
+
 #endif
