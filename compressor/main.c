@@ -20,23 +20,10 @@ as output argument.\n";
 
 void print_stats(size_t origin_sz, size_t tree_sz, size_t new_sz) {
     printf("tree size %ld bits\n", tree_sz);
-    size_t gb = 1024 * 1024 * 1024;
-    if (origin_sz < 100 * 1024) {
-        printf("origin size %ld bytes\n", origin_sz);
-    } else if (origin_sz < 100 * 1024 * 1024) {
-       printf("origin size %ld Kb\n", origin_sz / 1024);
-    } else if (origin_sz < 100 * gb) {
-       printf("origin size %ld Mb\n", origin_sz / (1024 * 1024));
-    }
-    if (new_sz < 100 * 1024) {
-        printf("new size %ld bytes\n", new_sz);
-    } else if (new_sz < 100 * 1024 * 1024) {
-       printf("new size %ld Kb\n", new_sz / 1024);
-    } else if (new_sz < 100 * gb) {
-       printf("new size %ld Mb\n", new_sz / (1024 * 1024));
-    }
+    printf("origin size %ld bytes\n", origin_sz);
+    printf("new size %ld bytes\n", new_sz);
     double ratio = (double)new_sz / (double)origin_sz;
-    printf("compression ratio %.3lf\n", ratio);
+    printf("compression ratio %.4lf\n", ratio);
 }
   
 
