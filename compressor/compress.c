@@ -100,6 +100,7 @@ size_t write_compressed_data(
         }
         if (i == 0) {
             fwrite_bit(fbostream, 0);
+            size += 1;
         }
         int j;
         for (j = i - 1; j >= 0; j -= 1) { 
@@ -131,8 +132,7 @@ void compress(
     write_symbol_count(ostream, *origin_szp);
     write_tree(fbostream, root, tree_szp);
     size_t compressed_bits = write_compressed_data(fbostream, istream, htnlist);
-    *new_szp = sizeof(size_t) + 
-        ((*tree_szp + compressed_bits) / (8 * fbos_buffer_sz) + 1) * fbos_buffer_sz;
+    *new_szp = sizeof(size_t) + (*tree_szp + compressed_bits) / 8 + 1;
     destroy_fbostream(fbostream);
     destroy_htree(root);
 }

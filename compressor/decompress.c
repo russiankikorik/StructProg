@@ -35,7 +35,9 @@ void read_compressed_data(
         HTNode* htree_root,
         size_t symbol_count) {
     if (htree_root->is_leaf == 1) {
-        fwrite(&(htree_root->sym), sizeof(char), symbol_count, ostream);
+        for (size_t i = 0; i < symbol_count; i += 1) {
+            fwrite(&(htree_root->sym), sizeof(char), 1, ostream);
+        }
     } else {
         HTNode* htnode;
         int bit = 0;
