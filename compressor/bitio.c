@@ -9,6 +9,9 @@ FBOstream* init_fbostream(FILE* ostream, size_t buffer_size) {
         fprintf(stderr, "Memory allocation error\n");
         exit(1);
     }
+    for (size_t i = 0; i < buffer_size; i += 1) {
+        (fbostream->buffer)[i] = 0;
+    }
     fbostream->carriage = 0;
     return fbostream;
 }
@@ -79,6 +82,13 @@ FBIstream* init_fbistream(FILE* istream, size_t buffer_size) {
     fbistream->istream = istream;
     fbistream->buffer_size = buffer_size;
     fbistream->buffer = malloc(buffer_size);
+    if (fbistream->buffer == NULL) {
+        fprintf(stderr, "Memory allocation error\n");
+        exit(1);
+    }
+    for (size_t i = 0; i < buffer_size; i += 1) {
+        (fbistream->buffer)[i] = 0;
+    }
     fbistream->carriage = 0;
     fbistream->byte_count = fread(fbistream->buffer, 1, buffer_size, istream);
     if (fbistream->byte_count != buffer_size) {
